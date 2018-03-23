@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Sequencer library test</title>
+		<style type="text/css">
+			body   { margin:0; padding:0; }
+			canvas {
+				background-color: rgb(0,0,0);
+				display: block;
+			}
+                        .loader     { display: block; position: absolute; top: 0; left:0; width:0; height:3px; background-color: rgba(255,255,255,0.8); transition: background-color 1.5s; }
+		</style>
+	</head>
+	<body>
+		<canvas></canvas>
+                <div class="loader"></div>
+	</body>
+	<script type="module">
+
+		import Sequencer from './sequencer/sequencer.js';
+
+                const loader = document.querySelector('.loader');
+
+		const s = Sequencer.make({
+			canvas           : document.querySelector("canvas"),
+			from             : 'pics/chris_marker-001.jpg',
+			to               : 'pics/chris_marker-096.jpg',
+			direction        : "x",
+			playMode         : "hover",
+			scaleMode        : "cover",
+			showLoadedImages : false,
+			hiDPI           : true,
+			imageLoad        : function(e){
+                                loader.style.width = e.count / e.total * 100 + 'vw';
+			},
+			queueComplete    : function(e){
+                                loader.style.width = '100vw';
+                                loader.style.backgroundColor = 'rgba(255,255,255,0)';
+			}
+		});
+
+		s.size(window.innerWidth, window.innerHeight);
+
+		window.addEventListener('resize', function(){
+			s.size(window.innerWidth, window.innerHeight);
+		});
+	</script>
+</html>
